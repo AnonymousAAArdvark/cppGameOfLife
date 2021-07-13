@@ -1,0 +1,1 @@
+/usr/bin/g++ -O3 -DNDEBUG -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cppGOL.dir/main.cpp.o -o cppGOL  -L/usr/local/Cellar/sdl2/2.0.14_1/lib  -lSDL2 

@@ -1,17 +1,24 @@
-#include <iostream>
 #include "SDL.h"
 #include <memory>
 #include <ctime>
 
+#define OFF_COLOR 0x00
+#define ON_COLOR 0xFF
+
+// Limit loop rate for visibility
+#define LIMIT_RATE 1
+// Tick rate in miliseconds (if LIMIT_RATE == 1)
+#define TICK_RATE 50
+
 // SDL Window and Surface for pixel manipulation
 SDL_Window *window = nullptr;
-SDL_Surface *surface = NULL;
+SDL_Surface *surface = nullptr;
 
 // Width and height of your cell in pixels
 unsigned int CELL_SIZE = 3;
 
-unsigned CELLMAP_WIDTH = 200;
-unsigned CELLMAP_HEIGHT = 200;
+unsigned CELLMAP_WIDTH = 500;
+unsigned CELLMAP_HEIGHT = 500;
 
 // We'll set these in a bit
 unsigned int SCREEN_WIDTH = CELLMAP_WIDTH * CELL_SIZE;
@@ -144,13 +151,13 @@ void CellMap::NextGen() {
             if(*cell_ptr & 0x01) {
                 if((live_neighbors != 2) && (live_neighbors != 3)) {
                     ClearCell(x, y);
-                    DrawCell(x, y, 0x00);
+                    DrawCell(x, y, OFF_COLOR);
                 }
             }
             else {
                 if(live_neighbors == 3) {
                     SetCell(x, y);
-                    DrawCell(x, y, 0xFF);
+                    DrawCell(x, y, ON_COLOR);
                 }
             }
 
@@ -183,6 +190,10 @@ int main(int argc, char* argv[]) {
 
         // Update frame buffer
         SDL_UpdateWindowSurface(window);
+
+#if LIMIT_RATE
+        SDL_Delay(TICK_RATE);
+#endif
     }
 
     // Clean up SDL
